@@ -1,13 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap");
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+  font-family: "Montserrat", sans-serif !important;
+}
+body,html{
+  overflow-x: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.primary{
+   background-color: #008282;
+   padding:5px 20px;
+   color: white;
+   border: none;
+   border-radius: 3px;
+   border: 1px solid #fff;
+}
+
+.secondary{
+  background-color: #ffffff;
+  padding:5px 20px;
+  color: black !important;
+  border: none;
+}
+
+
+/* CSS */
+.button-new {
+  background-image: linear-gradient(-180deg, #ffc107 0%, #faad14 100%);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-size: 16px;
+  justify-content: center;
+  padding: 1rem 1.75rem;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-new:hover {
+  background-image: linear-gradient(-180deg,  #ffc107 0%, #faad14 100%);
+}
+
+@media (min-width: 768px) {
+  .button-43 {
+    padding: 1rem 2rem;
+  }
+}
+.ant-pagination .ant-pagination-item-active{
+  background-color: #008282 !important;
+  border-color: #008282 !important;
+  color: white !important;
+}
+.ant-pagination-item {
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+}
+.ant-btn.ant-btn-lg {
+  font-size: 16px;
+  height: 60px !important;
+  padding: 5px 20px !important;
+  font-weight: 700 !important;
+  border-radius: 8px;
+}
+.ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button {
+  background-color: #008282 !important;
 }
