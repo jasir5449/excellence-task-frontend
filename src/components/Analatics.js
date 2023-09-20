@@ -1,17 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../resources/analatics.css";
 import LineChart from "./LineChart";
+import axios from "axios";
+import { API_URL } from "../constants/constants";
+import { message } from "antd";
 
-function Analatics({ schedules }) {
+function Analatics() {
 
-  const chartData = {
-    labels: ["2023-09-01", "2023-09-02", "2023-09-03", "2023-09-04"],
-    values: [5, 8, 6, 10],
+  const [chartDatas,setChartdata] = useState({labels:[],values:[]})
+
+
+  const getScheduleForGraph = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/api/schedules/get-graph-data`
+      );
+      if(response.data){
+        setChartdata({
+          labels: response?.data?.data?.map((item)=>item?._id),
+          values: response?.data?.data?.map((item)=>item?.count),
+        })
+      }
+    
+    } catch (error) {
+      message.error("Something went wrong");
+    }
   };
 
-  const totalSchedules = schedules?.length;
-
-
+  useEffect(()=>{
+    getScheduleForGraph();
+  },[])
+console.log(chartDatas)
   return (
     <div className="analytics">
       <div className="row">
@@ -21,7 +40,7 @@ function Analatics({ schedules }) {
         <div className="col-md-12">
           <div className="category-analysis">
             <h4>Line Chart</h4>
-          <LineChart data={chartData} />
+          <LineChart data={chartDatas} />
           </div>
         </div>
       </div>

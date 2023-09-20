@@ -30,6 +30,7 @@ function Home() {
   const [selectedRange, setSelectedRange] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [viewType, setViewType] = useState("table");
+  const [styleClass,setStyleClass] =useState('filter d-flex justify-content-between  align-items-center')
 
 
   const navigate = useNavigate();
@@ -102,6 +103,12 @@ function Home() {
     getTransactions();
   }, [frequency, selectedRange, type,searchValue]);
   
+  useEffect(()=>{
+    if(viewType === 'table')
+       setStyleClass('filter d-flex justify-content-between align-items-center' )
+    else
+       setStyleClass('filter d-flex justify-content-end align-items-center')
+  },[viewType])
   const columns = [
     {
       title: "Date",
@@ -133,7 +140,8 @@ function Home() {
     <DefaultLayout>
       {loading && <Spinner />}
     
-      <div className="filter d-flex justify-content-between align-items-center">
+      <div className={`${styleClass}`}>
+       {viewType === 'table' &&
         <div className="d-flex">
           <div className="d-flex flex-column">
             <h6>Select Frequency</h6>
@@ -164,15 +172,7 @@ function Home() {
               onChange={(value) => setType(value)}
               options={classData}
             />
-              {/* <Select value={type} onChange={(value) => setType(value)}>
-                <Select.Option value="all">All</Select.Option>
-                {classData.length > 0 ?
-                  classData?.map((item)=>{
-                    <Select.Option value={item?.classID}>{item?.className}</Select.Option>
-                })
-                :''
-            }
-              </Select> */}
+
           </div>
           <div className="d-flex flex-column mx-0">
             <h6>Instructor Name</h6>
@@ -184,9 +184,8 @@ function Home() {
               onSearch={onSearch}
             />
           </div>
-        
-         
         </div>
+       }
 
         <div className="d-flex">
        
@@ -221,7 +220,7 @@ function Home() {
             <Table columns={columns} dataSource={transactionsData} />
           </div>
         ) : (
-          <Analatics transactions={transactionsData} />
+          <Analatics />
         )}
       </div>
 

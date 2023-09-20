@@ -71,3 +71,10 @@ body,html{
 .ant-input-search >.ant-input-group >.ant-input-group-addon:last-child .ant-input-search-button {
   background-color: #008282 !important;
 }
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+  color: #fff;
+  background-color: #0c6664 !important;
+}
+.ant-upload-wrapper .ant-upload-drag:not(.ant-upload-disabled):hover {
+  border-color: #028282 !important;
+}

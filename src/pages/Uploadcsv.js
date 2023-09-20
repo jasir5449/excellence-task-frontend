@@ -40,9 +40,7 @@ function Uploadcsv() {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
-    },
+ 
   };
 
 
@@ -84,18 +82,18 @@ const columns = [
          {isUploading ?<p className="ant-upload-drag-icon">
            Loading....
           </p>: <p className="ant-upload-drag-icon">
-            <InboxOutlined />
+            <InboxOutlined color='#008282' style={{color:'#008282'}} />
           </p>
          }
-          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          <p className="ant-upload-text">Click here upload CSV file</p>
           <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from uploading company data or other
+            Support for a single csv upload (accept only .csv file). Strictly prohibited from uploading company data or other
             banned files.
           </p>
           </Dragger>
       </div>
  
-
+ 
       <div className="table-analtics table-responsive">
           <div className="table">
             <Table columns={columns} dataSource={uploadedData} />
