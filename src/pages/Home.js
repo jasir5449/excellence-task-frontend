@@ -122,7 +122,7 @@ function Home() {
       console.log("Connection SuccessFull")
     })
     socket.on('get-all-schedules',(msg) => {
-      console.log("Message ",msg)
+      //console.log("Message ",msg)
     })
   }, [frequency, selectedRange, type,ins]);
   

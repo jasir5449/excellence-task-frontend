@@ -61,7 +61,6 @@ const Settings = () => {
               }, 
             );
             if(response.data){
-               console.log(response.data)
                setLoading(false)
                message.success("Config Settings Addedd");
             }

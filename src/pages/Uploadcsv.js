@@ -28,28 +28,13 @@ function Uploadcsv() {
     async onChange(info) {
       setShowupload(true)
       const { status } = info.file;
-      console.log(status)
+      
       if (status !== 'uploading') {
          console.log('uploading');
        }
       if (status === 'done') {
-        console.log("done===",info.file.response);
         if(info.file.response){
-            //setUploadedData([])
-        // const formatedData = info?.file?.response.data?.map((item,index)=>{
-        //          return {
-        //             key:index,
-        //             studentID:item?.studentID,
-        //             registrationID:item?.registrationID,
-        //             instructorID:item?.instructorID,
-        //             classID:item?.classID,
-        //             dateTimeStartOfClass:item?.dateTimeStartOfClass,
-        //             action:item?.action,
-        //             status:item?.status,
-  
-        //          }
-        //    })
-        //    setUploadedData(formatedData);
+         console.log("done===");
         } 
         message.success(`${info.file.name} file uploaded successfully.`);
         setIsUploading(false)
@@ -94,7 +79,6 @@ const columns = [
         title: "Message",
         dataIndex: "status",
         render(status, record) {
-            console.log(status,record)
             let colorcode='';
               if(status.code == 1005) {
                 colorcode = 'success';
@@ -117,8 +101,6 @@ const columns = [
 
   useEffect(() => {
     socket.on('upload-response',(msg) => {
-        //console.log("msg",msg.dateTimeStartOfClass)
-        const dateStart =  moment(msg.dateTimeStartOfClass);
         setUploadedData((prevState) => {
             msg['key'] = prevState.length + 1;
             msg['dateTimeStartOfClass'] = moment(msg.dateTimeStartOfClass, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DD[T]HH:mm:ss')
@@ -130,7 +112,6 @@ const columns = [
     })
   },[])
 
-console.log("uploaded Data ",uploadedData)
 
 let locale = {
     emptyText: (
@@ -138,9 +119,8 @@ let locale = {
         <p>
         <dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay>
         </dotlottie-player>
-          No data uploaded yet!....
+          here only showing current uploaded csv details !....
         </p>
-       
       </span>
     )
   };

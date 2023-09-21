@@ -30,7 +30,7 @@ function Analatics() {
   useEffect(()=>{
     getScheduleForGraph();
   },[])
-console.log(chartDatas)
+
   return (
     <div className="analytics">
       <div className="row">
