@@ -153,7 +153,15 @@ let locale = {
  
       <div className="table-analtics table-responsive">
           <div className="table">
-            <Table bordered scroll={{ x: 700 }} tableLayout={'auto'}  locale={locale}  columns={columns} dataSource={uploadedData} />
+            <Table 
+                bordered 
+                scroll={{ x: 700 }} 
+                tableLayout={'auto'}   
+                locale={locale}  
+                columns={columns} 
+                dataSource={uploadedData}
+                pagination={false} 
+             />
           </div>
       </div>
 
