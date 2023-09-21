@@ -29,7 +29,9 @@
 .view-switch{
     border: 1px solid rgba(0, 0, 0, 0.71);
     border-radius: 3px;
-    padding: 5px 10px;
+    padding: 8px 20px;
+    align-items: baseline;
+    display: flex;
 }
 
 

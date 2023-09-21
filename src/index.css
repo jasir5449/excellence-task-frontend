@@ -23,6 +23,9 @@ body,html{
   color: black !important;
   border: none;
 }
+.mx-3 {
+  margin-left: 0px !important;
+}
 
 
 /* CSS */
@@ -77,4 +80,19 @@ body,html{
 }
 .ant-upload-wrapper .ant-upload-drag:not(.ant-upload-disabled):hover {
   border-color: #028282 !important;
+}
+.ant-btn-primary{
+  color: #fff;
+  background-color: #0c6664 !important;
+  height: 40px;
+  font-weight: bold;
+    /* border: 1px solid #fff; */
+}
+.ant-btn-primary:disabled {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+.ant-upload-wrapper .ant-upload-drag {
+  background: #148d8d1c !important;
+  border: 2px dashed #028282 !important;
+
 }

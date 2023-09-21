@@ -13,8 +13,8 @@ import moment from "moment";
 import Analatics from "../components/Analatics";
 import { API_URL } from "../constants/constants";
 import { useNavigate } from "react-router-dom";
-import { Input } from 'antd';
-const { Search } = Input;
+import { socket } from "../socket";
+
 
 
 
@@ -25,10 +25,11 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [transactionsData, setTransactionsData] = useState([]);
   const [classData, setClassData] = useState([]);
+  const [instructorData, setInstructorData] = useState([]);
   const [frequency, setFrequency] = useState("0");
   const [type, setType] = useState("all");
+  const [ins, setIns] = useState("all");
   const [selectedRange, setSelectedRange] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
   const [viewType, setViewType] = useState("table");
   const [styleClass,setStyleClass] =useState('filter d-flex justify-content-between  align-items-center')
 
@@ -41,17 +42,28 @@ function Home() {
         `${API_URL}/api/classes/listClasses`
       );
       let formatedDatas = [{
-        label:'all',
+        label:'All ',
+        value:'all'
+      }]
+      let formatedDatas_ins = [{
+        label:'All',
         value:'all'
       }]
       if(response.data){
-         response?.data?.data?.map((item)=>{
+         response?.data?.data?.classes?.map((item)=>{
               formatedDatas.push({
                   label:item?.class_name,
                   value:item?._id,
                })
          })
+         response?.data?.data?.instructors?.map((item)=>{
+          formatedDatas_ins.push({
+              label:item?.fullName,
+              value:item?._id,
+           })
+     })
          setClassData(formatedDatas);
+         setInstructorData(formatedDatas_ins)
       }
     
     } catch (error) {
@@ -59,7 +71,7 @@ function Home() {
     }
   };
 
-  const getTransactions = async () => {
+  const getSchedules = async () => {
     try {
       setLoading(true);
       const response = await axios.post(
@@ -68,19 +80,24 @@ function Home() {
           frequency,
           ...(frequency === "custom" && { selectedRange }),
           type,
-          searchValue
+          ins
         
         },
       );
       if(response.data){
-         const formatedData = response?.data?.map((item)=>{
+
+          const formatedData = response?.data?.map((item)=>{
+
           const dateStart = moment(item?.dateTimeStartOfClass);
           const dateEnd = moment(item?.dateTimeEndOfClass);
+
                return {
+                  key:item?._id,
                   studentName:item?.studentID.fullName,
+                  registrationID:item?.registrationID,
                   instructorName:item?.instructorID.fullName,
                   className:item?.classID.class_name,
-                  dateTimeStartOfClass:item?.dateTimeStartOfClass,
+                  dateTimeStartOfClass:moment(dateStart).format('MMM Do YYYY, h:mm a'),
                   dateTimeEndOfClass:dateEnd.diff(dateStart, 'minutes')
 
                }
@@ -100,8 +117,14 @@ function Home() {
   },[])
 
   useEffect(() => {
-    getTransactions();
-  }, [frequency, selectedRange, type,searchValue]);
+    getSchedules();
+    socket.on('connection',() => {
+      console.log("Connection SuccessFull")
+    })
+    socket.on('get-all-schedules',(msg) => {
+      console.log("Message ",msg)
+    })
+  }, [frequency, selectedRange, type,ins]);
   
   useEffect(()=>{
     if(viewType === 'table')
@@ -113,31 +136,53 @@ function Home() {
     {
       title: "Date",
       dataIndex: "dateTimeStartOfClass",
-      render: (text) => <span>{moment(text).format("YYYY-MM-DD HH:mm")}</span>,
+      render: (text) => <span style={{fontWeight:700,color: '#036868'}}>{text}</span>,
+      key: "dateTimeStartOfClass",
+    },
+    {
+      title: "RegistrationID",
+      dataIndex: "registrationID",
+      key: "registrationID",
     },
     {
       title: "Student",
       dataIndex: "studentName",
+      key: "studentName",
     },
+   
     {
       title: "Instructor",
       dataIndex: "instructorName",
+      key: "instructorName",
     },
     {
       title: "Class Type",
       dataIndex: "className",
+      key: "className",
     },
     {
       title: "Duration(minutes)",
       dataIndex: "dateTimeEndOfClass",
+      key: "dateTimeEndOfClass",
     },
 
   ];
 
-  const onSearch = (value, _e, info) =>setSearchValue(value);
+  let locale = {
+    emptyText: (
+      <span>
+        <p>
+       
+<dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay></dotlottie-player>
+          No Schedules Found!...
+        </p>
+       
+      </span>
+    )
+  };
 
   return (
-    <DefaultLayout>
+    <DefaultLayout  height={viewType==='table' ? 'content':'content'}>
       {loading && <Spinner />}
     
       <div className={`${styleClass}`}>
@@ -165,7 +210,7 @@ function Home() {
             )}
           </div>
           <div className="d-flex flex-column mx-5">
-            <h6>Select Class Types</h6>
+            <h6>Select Class</h6>
             <Select
               defaultValue="all"
               style={{ width: 120 }}
@@ -176,21 +221,22 @@ function Home() {
           </div>
           <div className="d-flex flex-column mx-0">
             <h6>Instructor Name</h6>
-            <Search
-              placeholder="search instructor name"
-              allowClear
-              enterButton="Search"
-              size="medium"
-              onSearch={onSearch}
+           
+             <Select
+              defaultValue="all"
+              style={{ width: 120 }}
+              onChange={(value) => setIns(value)}
+              options={instructorData}
             />
           </div>
+         
         </div>
        }
 
         <div className="d-flex">
        
-          <div>
-          <h6>Views</h6>
+        <div style={{alignAtems: "center",display: "flex"}}>
+         
             <div className="view-switch  mx-5" >
               <UnorderedListOutlined
                 className={`mx-3 ${
@@ -198,6 +244,7 @@ function Home() {
                 } `}
                 onClick={() => setViewType("table")}
                 size={30}
+                style={{marginLeft:0}}
               />
               <AreaChartOutlined
                 className={`${
@@ -217,7 +264,7 @@ function Home() {
       <div className="table-analtics table-responsive">
         {viewType === "table" ? (
           <div className="table">
-            <Table columns={columns} dataSource={transactionsData} />
+            <Table locale={locale}  columns={columns} dataSource={transactionsData} />
           </div>
         ) : (
           <Analatics />

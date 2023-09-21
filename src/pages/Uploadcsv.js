@@ -1,5 +1,5 @@
-import { message, Table } from "antd";
-import React, { useState } from "react";
+import { message, Table ,Tag} from "antd";
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "../components/DefaultLayout";
 import Spinner from "../components/Spinner";
 import "../resources/schedules.css";
@@ -8,6 +8,7 @@ import { API_URL } from "../constants/constants";
 
 import { InboxOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
+import { socket } from "../socket";
 const { Dragger } = Upload;
 
 
@@ -23,7 +24,7 @@ function Uploadcsv() {
     name: 'file',
     multiple: false,
     action: `${API_URL}/api/schedules/addRegistrations`,
-    beforeUpload:()=>{setIsUploading(true);return true;},
+    beforeUpload:()=>{setIsUploading(true); setUploadedData([]);return true;},
     async onChange(info) {
       setShowupload(true)
       const { status } = info.file;
@@ -33,6 +34,23 @@ function Uploadcsv() {
        }
       if (status === 'done') {
         console.log("done===",info.file.response);
+        if(info.file.response){
+            //setUploadedData([])
+        // const formatedData = info?.file?.response.data?.map((item,index)=>{
+        //          return {
+        //             key:index,
+        //             studentID:item?.studentID,
+        //             registrationID:item?.registrationID,
+        //             instructorID:item?.instructorID,
+        //             classID:item?.classID,
+        //             dateTimeStartOfClass:item?.dateTimeStartOfClass,
+        //             action:item?.action,
+        //             status:item?.status,
+  
+        //          }
+        //    })
+        //    setUploadedData(formatedData);
+        } 
         message.success(`${info.file.name} file uploaded successfully.`);
         setIsUploading(false)
         setShowupload(false)
@@ -46,57 +64,111 @@ function Uploadcsv() {
 
 const columns = [
     {
-      title: "Date",
-      dataIndex: "dateTimeStartOfClass",
-      render: (text) => <span>{moment(text).format("YYYY-MM-DD HH:mm")}</span>,
+      title: "RegistrationID",
+      dataIndex: "registrationID",
+    },
+   
+    {
+      title: "StudentID",
+      dataIndex: "studentID",
     },
     {
-      title: "Student",
-      dataIndex: "studentName",
+      title: "InstructorID",
+      dataIndex: "instructorID",
+    },
+
+    {
+      title: "ClassID",
+      dataIndex: "classID",
     },
     {
-      title: "Instructor",
-      dataIndex: "instructorName",
+        title: "Date",
+        dataIndex: "dateTimeStartOfClass",
+        render: (text) => <span style={{fontWeight:500,color: '#036868'}}>{text == 'Invalid date' ? '': moment(text).format('YYYY-MM-DD HH:mm')}</span>,
     },
     {
-      title: "Class Type",
-      dataIndex: "className",
+      title: "Action",
+      dataIndex: "action",
     },
     {
-      title: "Duration(minutes)",
-      dataIndex: "dateTimeEndOfClass",
-    },
-    {
-        title: "Error Msg",
-        dataIndex: "error",
+        title: "Message",
+        dataIndex: "status",
+        render(status, record) {
+            console.log(status,record)
+            let colorcode='';
+              if(status.code == 1005) {
+                colorcode = 'success';
+              }
+              else if(status.code == 1006){
+                colorcode = 'success';
+              }
+              else if(status.code == 1007){
+                colorcode = 'success';
+              }
+              else{
+                colorcode = 'error';
+              }
+            
+            return  <Tag color={colorcode}>{status?.message?.toUpperCase()}</Tag> 
+          },
       },
 
   ];
 
+  useEffect(() => {
+    socket.on('upload-response',(msg) => {
+        //console.log("msg",msg.dateTimeStartOfClass)
+        const dateStart =  moment(msg.dateTimeStartOfClass);
+        setUploadedData((prevState) => {
+            msg['key'] = prevState.length + 1;
+            msg['dateTimeStartOfClass'] = moment(msg.dateTimeStartOfClass, 'DD-MM-YYYY HH:mm').format('YYYY-MM-DD[T]HH:mm:ss')
+            return [
+                ...prevState,
+                msg   
+            ]
+        })
+    })
+  },[])
+
+console.log("uploaded Data ",uploadedData)
+
+let locale = {
+    emptyText: (
+      <span>
+        <p>
+       
+<dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay></dotlottie-player>
+          No data uploaded!....
+        </p>
+       
+      </span>
+    )
+  };
 
   return (
     <DefaultLayout>
       {loading && <Spinner />}
       <div style={{marginBottom:20}}>
-           <Dragger {...props} showUploadList={showupload} >
-         {isUploading ?<p className="ant-upload-drag-icon">
-           Loading....
-          </p>: <p className="ant-upload-drag-icon">
-            <InboxOutlined color='#008282' style={{color:'#008282'}} />
-          </p>
-         }
-          <p className="ant-upload-text">Click here upload CSV file</p>
-          <p className="ant-upload-hint">
-            Support for a single csv upload (accept only .csv file). Strictly prohibited from uploading company data or other
-            banned files.
-          </p>
-          </Dragger>
+           <Dragger {...props} showUploadList={showupload} disabled={showupload}  maxCount={1}>
+                {isUploading ?<p className="ant-upload-drag-icon">
+                Loading....
+                </p>: <p className="ant-upload-drag-icon">
+                    <InboxOutlined color='#008282' style={{color:'#008282'}} />
+                </p>
+                }
+                <p className="ant-upload-text">Click here upload CSV file</p>
+                <p className="ant-upload-hint">
+                    Support for a single csv upload (accept only .csv file). Strictly prohibited from uploading company data or other
+                    banned files.
+                </p>
+         </Dragger>
+
       </div>
  
  
       <div className="table-analtics table-responsive">
           <div className="table">
-            <Table columns={columns} dataSource={uploadedData} />
+            <Table  locale={locale}  columns={columns} dataSource={uploadedData} />
           </div>
       </div>
 

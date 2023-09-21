@@ -36,8 +36,8 @@ console.log(chartDatas)
       <div className="row">
       </div>
        <hr />
-      <div className="row">
-        <div className="col-md-12">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
           <div className="category-analysis">
             <h4>Line Chart</h4>
           <LineChart data={chartDatas} />
