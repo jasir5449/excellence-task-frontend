@@ -136,9 +136,9 @@ let locale = {
     emptyText: (
       <span>
         <p>
-       
-<dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay></dotlottie-player>
-          No data uploaded!....
+        <dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay>
+        </dotlottie-player>
+          No data uploaded yet!....
         </p>
        
       </span>

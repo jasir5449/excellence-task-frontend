@@ -39,7 +39,7 @@ function Home() {
   const getClassesTypes = async () => {
     try {
       const response = await axios.get(
-        `${API_URL}/api/classes/listClasses`
+        `${API_URL}/api/classes/fetch-classess-instructor`
       );
       let formatedDatas = [{
         label:'All ',
@@ -210,7 +210,7 @@ function Home() {
             )}
           </div>
           <div className="d-flex flex-column mx-5">
-            <h6>Select Class</h6>
+            <h6>Filter By Class</h6>
             <Select
               defaultValue="all"
               style={{ width: 120 }}
@@ -220,7 +220,7 @@ function Home() {
 
           </div>
           <div className="d-flex flex-column mx-0">
-            <h6>Instructor Name</h6>
+            <h6>Filter By Instructor</h6>
            
              <Select
               defaultValue="all"
@@ -235,7 +235,7 @@ function Home() {
 
         <div className="d-flex">
        
-        <div style={{alignAtems: "center",display: "flex"}}>
+        <div style={{alignItems: "center",display: "flex"}}>
          
             <div className="view-switch  mx-5" >
               <UnorderedListOutlined
@@ -244,7 +244,7 @@ function Home() {
                 } `}
                 onClick={() => setViewType("table")}
                 size={30}
-                style={{marginLeft:0}}
+          
               />
               <AreaChartOutlined
                 className={`${
@@ -252,6 +252,7 @@ function Home() {
                 } `}
                 onClick={() => setViewType("analytics")}
                 size={30}
+               
               />
             </div>
           </div>
@@ -262,8 +263,10 @@ function Home() {
       </div>
 
       <div className="table-analtics table-responsive">
+      
         {viewType === "table" ? (
           <div className="table">
+            <h4  style={{marginBottom:20,marginTop:20}}>Class Shedules</h4>
             <Table locale={locale}  columns={columns} dataSource={transactionsData} />
           </div>
         ) : (

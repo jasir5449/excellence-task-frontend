@@ -27,11 +27,17 @@
 }
 
 .view-switch{
-    border: 1px solid rgba(0, 0, 0, 0.71);
-    border-radius: 3px;
+    border: 1px solid rgb(12 102 100) ;
+    border-radius: 3px; 
     padding: 8px 20px;
     align-items: baseline;
     display: flex;
+    background: #0b67642e;
+}
+.table h4{
+    font-size: 20px;
+    color: #028282 !important;
+    font-weight: 600;
 }
 
 
@@ -41,7 +47,7 @@
 }
 
 .active-icon{
-    color: black;
+    color:  rgb(12 102 100);
     
 }
 .inactive-icon{
