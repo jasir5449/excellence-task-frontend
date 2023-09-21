@@ -138,32 +138,38 @@ function Home() {
       dataIndex: "dateTimeStartOfClass",
       render: (text) => <span style={{fontWeight:700,color: '#036868'}}>{text}</span>,
       key: "dateTimeStartOfClass",
+      showOnResponse: true,
     },
     {
       title: "RegistrationID",
       dataIndex: "registrationID",
       key: "registrationID",
+      showOnResponse: true,
     },
     {
       title: "Student",
       dataIndex: "studentName",
       key: "studentName",
+      showOnResponse: true,
     },
    
     {
       title: "Instructor",
       dataIndex: "instructorName",
       key: "instructorName",
+      showOnResponse: true,
     },
     {
       title: "Class Type",
       dataIndex: "className",
       key: "className",
+      showOnResponse: true,
     },
     {
       title: "Duration(minutes)",
       dataIndex: "dateTimeEndOfClass",
       key: "dateTimeEndOfClass",
+      showOnResponse: true,
     },
 
   ];
@@ -267,7 +273,7 @@ function Home() {
         {viewType === "table" ? (
           <div className="table">
             <h4  style={{marginBottom:20,marginTop:20}}>Class Shedules</h4>
-            <Table locale={locale}  columns={columns} dataSource={transactionsData} />
+            <Table bordered tableLayout={'fixed'} locale={locale}  columns={columns} dataSource={transactionsData} />
           </div>
         ) : (
           <Analatics />

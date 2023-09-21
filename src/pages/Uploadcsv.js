@@ -26,7 +26,7 @@ function Uploadcsv() {
     action: `${API_URL}/api/schedules/addRegistrations`,
     beforeUpload:()=>{setIsUploading(true); setUploadedData([]);return true;},
     async onChange(info) {
-      setShowupload(true)
+       setShowupload(true)
       const { status } = info.file;
       
       if (status !== 'uploading') {
@@ -34,9 +34,14 @@ function Uploadcsv() {
        }
       if (status === 'done') {
         if(info.file.response){
-         console.log("done===");
-        } 
-        message.success(`${info.file.name} file uploaded successfully.`);
+            console.log("done===");
+            if(info.file.response.status){
+                message.success(`${info.file.name} - ${info.file.response.msg}.`);
+            }
+            else{
+                message.error(`${info.file.name} - ${info.file.response.msg}.`);
+            }
+        }
         setIsUploading(false)
         setShowupload(false)
       } else if (status === 'error') {
@@ -148,7 +153,7 @@ let locale = {
  
       <div className="table-analtics table-responsive">
           <div className="table">
-            <Table  locale={locale}  columns={columns} dataSource={uploadedData} />
+            <Table bordered tableLayout={'auto'}  locale={locale}  columns={columns} dataSource={uploadedData} />
           </div>
       </div>
 
