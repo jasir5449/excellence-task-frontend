@@ -193,7 +193,7 @@ function Home() {
     
       <div className={`${styleClass}`}>
        {viewType === 'table' &&
-        <div className="d-flex">
+        <div className="d-flex" style={{gap:50}}>
           <div className="d-flex flex-column">
             <h6>Select Frequency</h6>
             <Select value={frequency} onChange={(value) => setFrequency(value)}>
@@ -215,11 +215,11 @@ function Home() {
 
             )}
           </div>
-          <div className="d-flex flex-column mx-5">
+          <div className="d-flex flex-column ">
             <h6>Filter By Class</h6>
             <Select
               defaultValue="all"
-              style={{ width: 120 }}
+             // style={{ width: 120 }}
               onChange={(value) => setType(value)}
               options={classData}
             />
@@ -230,7 +230,7 @@ function Home() {
            
              <Select
               defaultValue="all"
-              style={{ width: 120 }}
+              //style={{ width: 120 }}
               onChange={(value) => setIns(value)}
               options={instructorData}
             />
@@ -273,7 +273,7 @@ function Home() {
         {viewType === "table" ? (
           <div className="table">
             <h4  style={{marginBottom:20,marginTop:20}}>Class Shedules</h4>
-            <Table bordered tableLayout={'fixed'} locale={locale}  columns={columns} dataSource={transactionsData} />
+            <Table bordered scroll={{ x: 700 }} tableLayout={'fixed'} locale={locale}  columns={columns} dataSource={transactionsData} />
           </div>
         ) : (
           <Analatics />

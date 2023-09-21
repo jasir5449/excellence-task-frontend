@@ -122,9 +122,9 @@ let locale = {
     emptyText: (
       <span>
         <p>
-        <dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay>
-        </dotlottie-player>
-          here only showing current uploaded csv details !....
+            <dotlottie-player src="https://lottie.host/b5d91f8b-3e41-43ab-8c4d-c9c1b8358e38/A3ejvPxBZn.json" background="transparent" speed="1" style={{width: 250, height: 250,margin:'auto'}} direction="1" mode="normal" loop autoplay>
+            </dotlottie-player>
+            here only showing current uploaded csv details !....
         </p>
       </span>
     )
@@ -143,7 +143,7 @@ let locale = {
                 }
                 <p className="ant-upload-text">Click here upload CSV file</p>
                 <p className="ant-upload-hint">
-                    Support for a single csv upload (accept only .csv file). Strictly prohibited from uploading company data or other
+                    Support for a single csv upload (accept only .csv file). Strictly prohibited from uploading secure data or other
                     banned files.
                 </p>
          </Dragger>
@@ -153,7 +153,7 @@ let locale = {
  
       <div className="table-analtics table-responsive">
           <div className="table">
-            <Table bordered tableLayout={'auto'}  locale={locale}  columns={columns} dataSource={uploadedData} />
+            <Table bordered scroll={{ x: 700 }} tableLayout={'auto'}  locale={locale}  columns={columns} dataSource={uploadedData} />
           </div>
       </div>
 
